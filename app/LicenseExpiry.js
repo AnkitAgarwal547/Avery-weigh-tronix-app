@@ -14,7 +14,7 @@ import TokenManager from "../../utils/TokenManager";
 import styles from "./styles/LicenceExpiry.styles";
 import moment from "moment";
 
-const LicenseExpiry = ({ navigation, getUserDetailsDispatch, user }) => {
+const LicenseExpiry = ({ navigation }) => {
   const dispatch = useDispatch();
   const licenseData = useSelector((state) =>
     state.getIn(["admin", "licenseData"])
@@ -25,11 +25,9 @@ const LicenseExpiry = ({ navigation, getUserDetailsDispatch, user }) => {
   const dashboardWbID = useSelector((state) =>
     state.getIn(["global", "dashboardWbID"])
   );
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(false);
   const [userId, setUserId] = useState("");
   const [userType, setUserType] = useState("");
-  const gerUserType = async () => {
+  const getUserType = async () => {
     try {
       const userTy = await TokenManager.getRole();
       setUserType(userTy?.replace(" ", "")?.toLowerCase());
@@ -38,7 +36,7 @@ const LicenseExpiry = ({ navigation, getUserDetailsDispatch, user }) => {
     }
   };
   useEffect(() => {
-    gerUserType();
+    getUserType();
   }, []);
   const gerUserId = async () => {
     try {
@@ -166,15 +164,4 @@ const LicenseExpiry = ({ navigation, getUserDetailsDispatch, user }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  user: state.getIn(["auth", "user"]),
-});
-
-//map redux dispach methods to props
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getUserDetailsDispatch: (data) => dispatch(getUserDetails(data)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(LicenseExpiry);
+export default LicenseExpiry;
